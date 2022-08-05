@@ -1,0 +1,3 @@
+link currency: http://www.floatrates.com/daily/usd.json
+link country: https://restcountries.com/v3.1/currency/dollar
+
