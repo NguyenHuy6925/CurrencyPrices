@@ -106,7 +106,7 @@ public class fetchDataService extends Service implements Serializable {
     public Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            //Toast.makeText(fetchDataService.this, "service running", Toast.LENGTH_SHORT).show();
+            Toast.makeText(fetchDataService.this, "service running", Toast.LENGTH_SHORT).show();
             ArrayList<Currencies> currencyList = new ArrayList<>();
             try {
                 URL url1 = new URL("https://www.floatrates.com/daily/usd.json");
@@ -143,7 +143,12 @@ public class fetchDataService extends Service implements Serializable {
                 intent1.putExtra("itemlist", listItemtoNotify);
                 sendBroadcast(intent1);
             }
-            handler.postDelayed(this,5000);
+            else {
+                Intent intent1 = new Intent(fetchDataService.this, mBroadCast.class);
+                intent1.setAction("notthing");
+                sendBroadcast(intent1);
+            }
+            handler.postDelayed(this,3600000);
         }
     };
 }

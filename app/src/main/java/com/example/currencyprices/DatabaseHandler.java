@@ -224,12 +224,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursorRight.close();
 
         String digitAfterComma = "%.5f";
+        String rate1String = String.format(digitAfterComma,rateRight1/rateLeft1).replaceAll(",",".");
+        String rate2String = String.format(digitAfterComma,rateRight2/rateLeft2).replaceAll(",",".");
+        String rate3String = String.format(digitAfterComma,rateRight3/rateLeft3).replaceAll(",",".");
+        String rate4String = String.format(digitAfterComma,rateRight4/rateLeft4).replaceAll(",",".");
+        String rate5String = String.format(digitAfterComma,rateRight5/rateLeft5).replaceAll(",",".");
 
-        Double rate1 = Double.parseDouble(String.format(digitAfterComma,rateRight1/rateLeft1));
-        Double rate2 = Double.parseDouble(String.format(digitAfterComma,rateRight2/rateLeft2));
-        Double rate3 = Double.parseDouble(String.format(digitAfterComma,rateRight3/rateLeft3));
-        Double rate4 = Double.parseDouble(String.format(digitAfterComma,rateRight4/rateLeft4));
-        Double rate5 = Double.parseDouble(String.format(digitAfterComma,rateRight5/rateLeft5));
+        Double rate1 = Double.parseDouble(rate1String);
+        Double rate2 = Double.parseDouble(rate2String);
+        Double rate3 = Double.parseDouble(rate3String);
+        Double rate4 = Double.parseDouble(rate4String);
+        Double rate5 = Double.parseDouble(rate5String);
 
         list.add(String.valueOf(rate1));
         if(rate2.isNaN()){

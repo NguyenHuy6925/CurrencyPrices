@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_margin="@dimen/_3sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:text="Current rate: "/>
 
     <TextView
@@ -28,22 +28,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_margin="@dimen/_3sdp" />
+        android:layout_margin="@dimen/_10sdp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_margin="@dimen/_3sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:text="Make notification when the rate: "/>
 
     <EditText
         android:id="@+id/txtSetPrice"
-        android:layout_margin="@dimen/_3sdp"
-        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
+        android:layout_gravity=""
         android:textSize="15sp"
+        android:inputType="numberDecimal"
         android:background="@drawable/set_rate_edt_layout"/>
 
     <LinearLayout
@@ -55,20 +58,22 @@
             android:id="@+id/btnOk"
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/_10sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_30sdp"
             android:backgroundTint="@color/btn_ok"
             android:textColor="@color/black"
+            android:textSize="10sp"
             android:text="ok" />
         <Button
             android:id="@+id/btnCancel"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_30sdp"
             android:backgroundTint="@color/btn_cancel"
             android:textColor="@color/black"
+            android:textSize="10sp"
             android:text="cancel" />
     </LinearLayout>
 
