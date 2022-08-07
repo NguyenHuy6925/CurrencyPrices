@@ -85,15 +85,16 @@ public class fetchDataService extends Service implements Serializable {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
          super.onStartCommand(intent, flags, startId);
-        //Toast.makeText(this, "service started", Toast.LENGTH_SHORT).show();
+         Toast.makeText(getApplicationContext(), "service started", Toast.LENGTH_SHORT).show();
          handler.post(runnable);
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        //Toast.makeText(this, "service stopped", Toast.LENGTH_SHORT).show();
-        Intent restartIntent = new Intent(SHUT_DOWN_ACTION);
+        Toast.makeText(getApplicationContext(), "service stopped", Toast.LENGTH_SHORT).show();
+        Intent restartIntent = new Intent(fetchDataService.this,mBroadCast.class);
+        restartIntent.setAction(SHUT_DOWN_ACTION);
         sendBroadcast(restartIntent);
         super.onDestroy();
     }

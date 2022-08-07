@@ -51,11 +51,9 @@ public class mBroadCast extends BroadcastReceiver {
         }
 
         if(intent.getAction().equals("SHUT_DOWN_ACTION")) {
+            Toast.makeText(context, "recieved sussecfully", Toast.LENGTH_SHORT).show();
             context.startService(new Intent(context, fetchDataService.class));
         }
 
-        if(intent.getAction().equals("notthing")){
-            Toast.makeText(context, "recieved sussecfully  ", Toast.LENGTH_SHORT).show();
-        }
     }
 }
