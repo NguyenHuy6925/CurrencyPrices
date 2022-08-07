@@ -24,6 +24,8 @@ public class mBroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "intent recieved", Toast.LENGTH_SHORT).show();
+
+        //tạo notification nếu có dữ liệu
         if(intent.getAction().equals("SEND_ITEMS_FOR_NOTIFY_ACTION")) {
             ArrayList<ItemsNotify> itemList = (ArrayList<ItemsNotify>) intent.getSerializableExtra("itemlist");
             if(itemList.size()==0){

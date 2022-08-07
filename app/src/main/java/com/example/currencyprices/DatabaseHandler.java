@@ -27,8 +27,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String SAVE_TABLE_NAME = "dataTableSave";
     private Context context;
 
+    //query tạo bảng dữ liệu để lưu data tải về
     private String mainTableQuery = "CREATE TABLE " + MAIN_TABLE_NAME + " (code TEXT, flag TEXT, rate1 DOUBLE, rate2 DOUBLE, rate3 DOUBLE, rate4 DOUBLE, rate5 DOUBLE, "+
             "date1 TEXT, date2 TEXT, date3 TEXT, date4 TEXT, date5 TEXT)";
+    //query tạo bảng lưu các rate do người dùng đặt
     private String saveTableQuery = "CREATE TABLE " + SAVE_TABLE_NAME + " (codeleft TEXT, coderight TEXT, rateleft DOUBLE, rateright DOUBLE, rate TEXT, higher INT)";
 
 
@@ -47,6 +49,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
     }
 
+    //save dữ liệu vào main database
     public void updateDatabase (ArrayList<Currencies> currenciesList) {
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor = database.rawQuery("SELECT * from "+MAIN_TABLE_NAME,null);
@@ -98,6 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
             database.close();
         }
+        //tạo dòng đầu tiên nếu bảng chưa có gì
         else {
             for(int i=0;i<currenciesList.size();i++){
                 database.execSQL("INSERT INTO "+MAIN_TABLE_NAME+" (code, rate1, date1) VALUES (?,?,?)", new String[]
@@ -106,6 +110,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    //tạo danh sách những rate do người dùng lưu, gửi lên reciever make notification
     public ArrayList<ItemsNotify> listToNotification() {
         ArrayList<ItemsNotify> list = new ArrayList<>();
         SQLiteDatabase dataBase = getWritableDatabase();
@@ -140,6 +145,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 leftCursor.close();
                 rightCursor.close();
             }
+            //delete những rate gửi lên notification
             if(list.size()>0){
                 Toast.makeText(context, list.get(0).getRate()+"", Toast.LENGTH_SHORT).show();
                 for(int i=0;i<list.size();i++) {
@@ -153,6 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    //lưu thông tin vào savetable
     public void updateSaveTable (String codeLeft, String codeRight, Double rate, int higher) {
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor = database.rawQuery("select * from "+SAVE_TABLE_NAME,null);
@@ -194,6 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    //danh sách rate và date left right để show lên listview
     public ArrayList<String> list (String codeLeft,String codeRight){
         ArrayList<String> list = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();

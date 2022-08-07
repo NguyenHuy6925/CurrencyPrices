@@ -116,23 +116,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        addControls();
-        setInitalData();
+        addControls(); //findviewbyid cho các biến
+        setInitalData(); //gán giá trị ban đầu cho các biến
         creatNotificationChannel();
 
         progressDialog.show();
-        FetchCurrenciesData fetchCurrenciesData = new FetchCurrenciesData();
+        FetchCurrenciesData fetchCurrenciesData = new FetchCurrenciesData(); //lấy thông tin về currency từ link json: code, rate, date
         fetchCurrenciesData.execute();
-        FetchCountriesData fetchCountriesData = new FetchCountriesData();
+        FetchCountriesData fetchCountriesData = new FetchCountriesData(); //lấy thông tin về country từ link json: name, flag
         fetchCountriesData.execute();
 
-        stopService(serviceIntent);
+        stopService(serviceIntent); //service tải dữ liệu (chạy ngầm), 1h update 1 lần
         startForegroundService(serviceIntent);
         registerReceiver(receiver,intentFilter);
         addEvents();
     }
 
     private void addEvents() {
+        //tạo sự kiện nhấn vào image để tải thông tin từ sqlte
         imgLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
                 if(item.getItemId()==R.id.aboutItem && aboutFragmentShowing==false) {
+                    //setup và chạy fragment khi nhấn vào nút "about" trong slide menu
                     frameLayout_above.bringToFront();
                    fragmentManager = getSupportFragmentManager();
                    fragmentTransaction = fragmentManager.beginTransaction();
@@ -229,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //gán giá trị ban đầu cho các biến
     public void setInitalData() {
         currencyLayout.bringToFront();
         tabHost.setAlpha(0);
@@ -250,7 +253,9 @@ public class MainActivity extends AppCompatActivity {
         itemTime = tabHostOffsetTime+tabHostTime;
     }
 
-    public void startAnimations(){
+    //tạo animation cho các view trên main activity
+    public void startAnimations() {
+        //kiểm tra cả hai thông tin textview code bên trái và code bên phải đã có thông tin chưa, nếu có thì bắt đầu chạy animation
         if(!codeLeft.getText().equals("") && !codeRight.getText().equals("")) {
             txtTap.animate().setDuration(textViewTime);
             txtTap.animate().alpha(0);
@@ -263,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             tabHost.animate().setStartDelay(tabHostOffsetTime);
             tabHost.animate().alpha(1.f);
             tabHost.setClickable(true);
-            tabHost.animate().withEndAction(new Runnable() {
+            tabHost.animate().withEndAction(new Runnable() { //khí tabhost hiện ra thì mới tải dữ liệu từ sqlite lên listview
                 @Override
                 public void run() {
                     showItems();
@@ -301,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
                 popupMenu.show();
     }
 
+    //popup window khi nhấn vào imagview, hiển thị thông tin code, country name, flag
     private void setPopUpWindow(ArrayList<Currencies> currenciesList,ImageView imageView, TextView txtCode, TextView txtCountry) {
         if(currenciesList.size()>0) {
             LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -312,6 +318,8 @@ public class MainActivity extends AppCompatActivity {
             popupWindow = new PopupWindow(view,300,500,true);
             popupWindow.setFocusable(true);
             popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+
+            //tìm kiếm code
             searchBox.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -328,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
             popUpListView.setOnItemClickListener((adapterView, view1, position, l) -> {
                 String code = (String) popUpListView.getAdapter().getItem(position);
                 txtCode.setText(code);
@@ -346,6 +355,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
+                //thiếu dữ liệu của "usd" và "eur" nên bổ sung
                 if(txtCode.getText().equals("USD")){
                     txtCountry.setText("United States");
                     byte[] data = Base64.decode("iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUCAYAAACaq43EAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpERTc5MkI3RjE3OEExMUUyQTcxNDlDNEFCRkNENzc2NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpERTc5MkI4MDE3OEExMUUyQTcxNDlDNEFCRkNENzc2NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkEyMTE0RjIyMTc4QTExRTJBNzE0OUM0QUJGQ0Q3NzY2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkRFNzkyQjdFMTc4QTExRTJBNzE0OUM0QUJGQ0Q3NzY2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+60cYSwAAAyhJREFUeNrElN1PU3cYxz/tOQUBD/aNymtbUAq2IOiUWXmZA40Iy2BzcW53y7JlyZLtZuE/8NaY7Gbe7WJbdJnTDOdQCbLKrERUotgCSodQ7AsFpK28yKT7rfsL2gv7JCcn+eV3zpPv5/l+H9X2xp65SqtJGfr1Fg3vNPD02SIhfwRniwP3pdvsOVxPaCHGs7+DOA/VJs8crXXEs3P48OfTfMIcU+SRaqlMzm8SNut2VuefIxvyydZIxFbWyX35iviLNZRiPZJaxdLyCkoiQUyc6cwFTPvC9FRkcbJMy7JaTrmxHIuvxaZm5xW7+Jl3NkKRaRt5OVlMjvuoqa9gwr9AgS4PvTYP78hjdtVVEAw9J+Kdxv7Td+hL8tGTeslGg8Jeexk3/riLs62O+cU441NBDjbZGbg+SlNbPYvRF9zzzHCoycFA/yhvCtRqnZbr5a1YEjGm5S2po1ZXfRHVaCTlWLODq24v1eWFGPVbuXH5Dh3vORm88xhziR5zoZ5rl9y0dx/ggS/EzGSQs5Ua3s39h7CUlbri0mKdUGzmijBXqzBXYH4Z931fsmlf7zBvd+wjIigMDI/TcbyRvt+GOSgUZ62uU3S2h8IdRgrTQK1S2T6PyhpZ+aB9LxcF2hpbCUUF27hy4S+Of/wWfUMeykuNVIin9/xNuj9qYWR8juknIc5szNC1voA/DdSypayAhlor57/vp/NEC7OBRfpveek+0cwvP/7JsfedhEWcLg8+pOtkMxfOuTjc5WSrSc+S6ymSQYtGyk5dsVT9/4zbhZmu3Z5IztggXOwSZjvSuZ+hUR9mEan/KAz+PkJb5z7GngSYdXu46T9Ho3EL6ZSKnZ9Fax0W5aFrDNuB6mROA6El7BYTnns+bPt3srK2gV+QcIjIPRLzrxL3ZkLLfB0c40udRCAd1EfFNioxaSG+Sl2NmchSnCKjwh6HBWlzk/rd1uTyMOTn8MbuctRiieyqLKbKbqXs4gSvQmFephOnRCIRFW+F11yyp/3TtD/eSKjYTM4rjcZh110yUZlDPfnVqcwovkppRhRnDrX/2x+UjKDuJXcuE4r/FWAAjBMttNdoYOEAAAAASUVORK5CYII=",Base64.DEFAULT);
@@ -377,9 +388,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //sự kiện mở slide menu bên trái
         if(drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        //mở notification dialog khi nhấn nút chuông bên phải
         else if(item.getItemId()==R.id.option_notificaiton) {
             Double rateLeft=0.0;
             Double rateRight=0.0;
@@ -391,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
                     rateRight = currenciesList.get(i).getRate();
                 }
             }
-
             NotificationDialog notificationDialog = new NotificationDialog(MainActivity.this,codeLeft.getText().toString(),codeRight.getText().toString(),
                     rateLeft,rateRight);
             notificationDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -401,6 +413,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //tải dữ liệu lên listview từ sqlite
     private void showItems() {
         rateList = new ArrayList<>();
         dateList = new ArrayList<>();
@@ -419,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //lưu dữ liệu vào database
     private void addItemsToDatabase() {
         if(currenciesList.size()>0){
             //Toast.makeText(MainActivity.this, "run addItem", Toast.LENGTH_SHORT).show();
@@ -524,6 +538,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //progress dialog sẽ dismiss khi toàn bộ dữ liệu đã được tải về
     private void dismissProgressDialog() {
         if(currenciesList.size()>0 && countriesList.size()>0){
             progressDialog.dismiss();

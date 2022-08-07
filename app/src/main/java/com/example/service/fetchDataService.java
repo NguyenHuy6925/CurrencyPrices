@@ -63,6 +63,7 @@ public class fetchDataService extends Service implements Serializable {
         listItemtoNotify = new ArrayList<>();
         handler = new Handler();
 
+        //tạo một forground notification luôn chạy trên status bar
         Intent notificationIntent = new Intent(this,MainActivity.class);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this,"forgroundchannel")
                 .setContentText("Currency Prices")
@@ -103,6 +104,7 @@ public class fetchDataService extends Service implements Serializable {
         return null;
     }
 
+    //lấy dữ liệu mới mỗi giờ 1 lần, kiểm tra và gửi dữ liệu đến reciever (nếu có)
     public Runnable runnable = new Runnable() {
         @Override
         public void run() {
