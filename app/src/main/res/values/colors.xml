@@ -12,7 +12,7 @@
     <color name="image_background_color">#7A7A7A</color>
     <color name="main">#FFC369</color>
     <color name="appbar">#B66D00</color>
-    <color name="btn_ok">#FFC369</color>
+    <color name="btn_ok">#B66D00</color>
     <color name="btn_cancel">#E4E4E4</color>
     <color name="text_navigationview">#FFFFFFFF</color>
 </resources>
