@@ -23,8 +23,6 @@ import java.util.Collections;
 public class mBroadCast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "intent recieved", Toast.LENGTH_SHORT).show();
-
         //tạo notification nếu có dữ liệu
         if(intent.getAction().equals("SEND_ITEMS_FOR_NOTIFY_ACTION")) {
             ArrayList<ItemsNotify> itemList = (ArrayList<ItemsNotify>) intent.getSerializableExtra("itemlist");
@@ -54,6 +52,25 @@ public class mBroadCast extends BroadcastReceiver {
             Toast.makeText(context, "recieved sussecfully", Toast.LENGTH_SHORT).show();
             context.startService(new Intent(context, fetchDataService.class));
         }
+    }
+
+    public void makeNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            CharSequence name = "name";
+            String description = "description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notificationId",name,importance);
+            channel.setDescription(description);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"notificationId").
+                    setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentTitle("this is a title")
+                    .setContentText("reciever still running")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            notificationManager.notify(1,builder.build());
 
     }
 }

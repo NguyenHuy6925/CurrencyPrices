@@ -151,7 +151,7 @@ public class fetchDataService extends Service implements Serializable {
                 intent1.setAction("notthing");
                 sendBroadcast(intent1);
             }
-            handler.postDelayed(this,3600000);
+            handler.postDelayed(this,300000);
         }
     };
 }

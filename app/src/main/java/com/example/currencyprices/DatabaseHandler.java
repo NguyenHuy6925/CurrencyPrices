@@ -113,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //tạo danh sách những rate do người dùng lưu, gửi lên reciever make notification
     public ArrayList<ItemsNotify> listToNotification() {
         ArrayList<ItemsNotify> list = new ArrayList<>();
-        SQLiteDatabase dataBase = getWritableDatabase();
+        SQLiteDatabase dataBase = getReadableDatabase();
         Cursor saveCursor = dataBase.rawQuery("select * from "+SAVE_TABLE_NAME,null);
         if (saveCursor.getCount()>0) {
             while (saveCursor.moveToNext()){
