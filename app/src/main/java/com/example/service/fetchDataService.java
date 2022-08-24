@@ -78,7 +78,7 @@ public class fetchDataService extends Service implements Serializable {
         notificationManager.createNotificationChannel(channel);
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
 
-        startForeground(1337,notification.build());
+        startForeground(1337,notification.build());;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
